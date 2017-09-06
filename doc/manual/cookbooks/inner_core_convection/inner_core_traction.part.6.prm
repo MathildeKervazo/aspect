@@ -1,0 +1,7 @@
+#!/bin/ksh
+#SBATCH --job-name=g10000P2
+#SBATCH --output=o.g10000P2.%j
+#SBATCH --error=e.g10000P2.%j
+#SBATCH --ntasks=100
+#SBATCH --time=08:00:00
+aprun -n 100 ../../../../aspect inner_core_traction.prm

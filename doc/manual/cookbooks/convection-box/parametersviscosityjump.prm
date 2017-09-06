@@ -1,0 +1,18 @@
+SimplerWithCrust<dim>::parse_parameters (ParameterHandler &prm)
+    {
+      prm.enter_subsection("Material model");
+      {
+        prm.enter_subsection("Simpler with crust model");
+        {
+          reference_rho              = prm.get_double ("Reference density");
+          reference_T                = prm.get_double ("Reference temperature");
+          eta_L                      = prm.get_double ("Lower viscosity");
+          eta_U                      = prm.get_double ("Upper viscosity");
+          jump_height                = prm.get_double ("Jump height");
+          k_value                    = prm.get_double ("Thermal conductivity");
+          reference_specific_heat    = prm.get_double ("Reference specific heat");
+          thermal_alpha              = prm.get_double ("Thermal expansion coefficient");
+        }
+        prm.leave_subsection();
+      }
+      prm.leave_subsection();

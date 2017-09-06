@@ -1,0 +1,22 @@
+ SimplerWithCrust<dim>::
+    evaluate(const typename Interface<dim>::MaterialModelInputs &in, typename Interface<dim>::MaterialModelOutputs &out ) const
+    {
+      for (unsigned int i=0; i<in.position.size(); ++i)
+        {
+          const double z = in.position[i][1];
+          if (z>jump_height)
+            out.viscosities[i] = eta_U;
+          else
+            out.viscosities[i] = eta_L;
+
+          out.densities[i] = reference_rho * (1.0 - thermal_alpha * (in.temperature[i] - reference_T));
+          out.thermal_expansion_coefficients[i] = thermal_alpha;
+          out.specific_heat[i] = reference_specific_heat;
+          out.thermal_conductivities[i] = k_value;
+          out.compressibilities[i] = 0.0;
+          out.entropy_derivative_pressure[i] = 0.0;
+          out.entropy_derivative_temperature[i] = 0.0;
+          for (unsigned int c=0; c<in.composition[i].size(); ++c)
+            out.reaction_terms[i][c] = 0.0;
+        }
+    }

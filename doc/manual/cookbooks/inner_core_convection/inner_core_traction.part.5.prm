@@ -1,0 +1,7 @@
+%At the beginning of the input file
+set Resume computation                     = true
+%
+subsection Checkpointing
+    set Steps between checkpoint = 100
+    set Time between checkpoint = 0
+end

@@ -1,0 +1,16 @@
+subsection Material model
+  set Model name = simpler with crust
+
+  subsection Simpler with crust model
+    set Reference density             = 1
+    set Reference specific heat       = 1
+    set Reference temperature         = 0
+    set Thermal conductivity          = 1
+    set Thermal expansion coefficient = 1
+#    set Viscosity                     = 1
+
+    set Lower viscosity               = 0.4
+    set Upper viscosity               =	1
+    set Jump height                   = 0.8
+  end
+end

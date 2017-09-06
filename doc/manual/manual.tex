@@ -7950,14 +7950,8 @@ as temperature variations associated with lithospheric thinning exert a first-or
 \textit{This section was contributed by Juliane Dannberg, and the model setup was inspired 
 by discussions with John Rudge.}
 
-Hey
+This is an example of convection in the Earth's inner core. The model is based on a spherical geometry. Three main particularities are constitutive of this inner core dynamics modelling: it consists of a self-gravitating sphere where the gravity increases linearly from zero at the center; the boundary conditions are permeable (material can cross the inner core boundary. See \cite{Deguen2013}); it's characterized by a single material with temperature dependent density that makes it unstably stratified as temperature increases towards the center of the core.
 
-This is an example of convection in the inner core of the Earth. It uses a spherical geometry 
-and is characterized by a single material with temperature dependent density that makes it
-unstably stratified as temperature increases towards the center of the core. 
-The boundary conditions combine normal stress and normal velocity, and take into account the
-rate of phase change (melting/freezing) at the inner-outer core boundary. Gravity decreases 
-linearly from the boundary to zero at the center of the inner core. 
 The setup is analogous to the models described in \cite{Deguen2013}, and all material properties 
 are chosen in a way so that the equations are non-dimensional.
 
@@ -7981,11 +7975,18 @@ In their non-dimensional form, the equations are
   H,
 \end{align}
 
-where $Ra$ is the Rayleigh number. 
+where $Ra$ is the Rayleigh number and $H$ is the 'source term'. The term $H$ is an artificial one, that arises from the time-variation of the adiabatic temperature in the outer core. Following \citet{Deguen2013}, with the proposed adimensionalization, $H=6$. 
 
+\vspace{0.3cm}
+\textbf{Thermal evolution of the inner core.}
+During the Earth evolution, the temperature in the core decreases due to secular cooling. The isentropic temperature profile is used as a reference temperature, and when making the equations non-dimensional, a term emerges in the energy conservation equation, mathematically similar to a source term. The dimensional value of this source term is used in the Rayleigh number, as it is in the temperature scale. A slow time-variation of the adiabatic temperature will be associated to a negative source term, and a strongly stratified inner core ($Ra<0$). A positive value will be associated to a positive $Ra$ number, which indicates a convectively unstable inner core if the Rayleigh number is large enough. 
+
+
+\vspace{0.3cm}
+\textbf{Mechanical boundary.}
 The mechanical boundary conditions for the inner core are
 tangential stress-free and continuity of the normal stress at the
-inner-outer core boundary. For the non-dimensional equations, that
+inner-outer core boundary. The inner core boundary is a freezing/melting boundary, and thus can't be considered completely impermeable. For the non-dimensional equations, that
 means that we can define a ``phase change number'' $\mathcal{P}$ so that the
 normal stress at the boundary is $-\mathcal{P} u_r$ with the radial velocity
 $u_r$. This number characterizes the resistance to phase change at
@@ -8012,37 +8013,15 @@ to the matrix:
 \lstinputlisting[language=C++,,basicstyle=\footnotesize\ttfamily,]{../../cookbooks/inner_core_convection/inner_core_assembly.cc}
 Instructions for how to compile and run models with a shared library are given in Section~\ref{sec:benchmark-run}.
 
-Analyzing Equations~\eqref{eq:inner-core-1}--\eqref{eq:inner-core-3} reveals that two parameters determine 
-the dynamics of convection in the inner core: the Rayleigh number $Ra$ and the phase change number $\mathcal{P}$. 
-For low Rayleigh numbers below a critical value $Ra_c$ that is approximately $1000$ for high $\mathcal{P}$ ($\gg 29$), and 
-that depends linearly on $\mathcal{P}$ for smaller $\mathcal{P}$ (see \cite{Deguen2013}), there is no convection 
-and thermal diffusion dominates the heat transport. 
-For higher values of $Ra > Ra_c$, the style of convection in the inner core depends on $\mathcal{P}$: 
-For high $\mathcal{P}$ ($\gg 29$, see \cite{Deguen2013}), convection is dominated by thermal plumes with the number 
-of plumes scaling with the Rayleigh number; whereas for low values of $\mathcal{P}$, the inner core is in a 
-translation regime, where material freezes at one side and melts at the other side, so that the velocity field 
-is uniform, pointing from the freezing to the melting side. 
+\vspace{0.3cm}
+\textbf{Governing parameters.} Analyzing Equations~\eqref{eq:inner-core-1}--\eqref{eq:inner-core-3} reveals that two parameters determine the dynamics of convection in the inner core: the Rayleigh number $Ra$ and the phase change number $\mathcal{P}$. Three main areas can be distinguished: the stable area, the plume convection area and the translation mode of convection area (Figure~\ref{fig:diagramme-regime}). For low Rayleigh numbers (below the critical value $Ra_c$), there is no convection and thermal diffusion dominates the heat transport. However, if the inner core is convectively unstable ($Ra$>$Ra_c$), the convection regime depends mostly on $\mathcal{P}$. For low $\mathcal{P}$ (<29), the convective translation mode dominates, where material freezes at one side and melts at the other side, so that the velocity field is uniform, pointing from the freezing to the melting side. Otherwise, at high $\mathcal{P}$ (>29), convection takes the usual form of plume convection. In this case, there is almost no melting or solidification associated with this mode. At intermediate values of P, the first unstable mode is a linear combinaison of the high-$\mathcal{P}$ convection mode and of the small-$\mathcal{P}$ translation mode.
 
-\begin{figure}
-    \centering
-    \begin{tabular}{lcl}
-    \includegraphics[height=0.25\textwidth]{cookbooks/inner_core_convection/convection.png}
-    & \hspace{1cm} &
-    \includegraphics[height=0.25\textwidth]{cookbooks/inner_core_convection/convection_contours.png}
-    \\
-    \includegraphics[height=0.25\textwidth]{cookbooks/inner_core_convection/translation.png}
-    & \hspace{1cm} &
-    \includegraphics[height=0.25\textwidth]{cookbooks/inner_core_convection/translation_contours.png}
-    \\
-    \includegraphics[height=0.25\textwidth]{cookbooks/inner_core_convection/no_convection.png}
-    & \hspace{1cm} &
-    \includegraphics[height=0.25\textwidth]{cookbooks/inner_core_convection/no_convection_contours.png}
-    \end{tabular}
-    \caption{Convection regimes in the inner core for different values of $Ra$ and $\mathcal{P}$.
-             From top to bottom: plume convection, translation, no convection; full 3d models
-             on the left and 2d slices on the right. Temperature is shown as contours, 
-             velocity is shown as arrows.}
-    \label{fig:inner-core-regimes}
+\begin{figure}[h]
+\begin{center}
+\includegraphics[height=0.57\textwidth]{cookbooks/inner_core_convection/Diagstab.png}
+\caption{Stability diagram for convection in a sphere with phase change at its outer boundary. The stability curves for the first unstable mode (l=1) and the translation are obtained from \cite{Deguen2013}.}
+    \label{fig:diagramme-regime}
+\end{center}
 \end{figure}
 
 Changing the values of $Ra$ and $\mathcal{P}$ in the input file allows switching between the different regimes.
@@ -8052,12 +8031,34 @@ The phase change number is implemented as part of the material model, and as a f
 spatial coordinates and/or on time: 
 \lstinputlisting[language=prmfile]{cookbooks/inner_core_convection/inner_core_traction.part.1.prm}
 
-Figure~\ref{fig:inner-core-regimes} shows examples of the three regimes with $Ra=3000, \mathcal{P}=1000$ (plume convection), 
-$Ra=10^5, \mathcal{P}=0.01$ (translation), $Ra=10, \mathcal{P}=30$ (no convection).
+Figure~\ref{fig:inner-core-regimes} shows examples of the three regimes with $Ra=10^5, \mathcal{P}=10^4$ (plume convection), 
+$Ra=10^2, \mathcal{P}=10^-1$ (translation), $Ra=1, \mathcal{P}=1$ (no convection).
 
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=0.25\linewidth]{cookbooks/inner_core_convection/Ra1e0P0modif.png}
+    \includegraphics[width=0.25\linewidth]{cookbooks/inner_core_convection/Ra1e2P-1modif.png}
+    \includegraphics[width=0.25\linewidth]{cookbooks/inner_core_convection/Ra1e5P4modif.png}
+   \vspace{1cm}
+    \includegraphics[width=0.25\linewidth]{cookbooks/inner_core_convection/Ra1e0P0modif.png}
+    \includegraphics[width=0.25\linewidth]{cookbooks/inner_core_convection/Ra1e2P-1rescalemodif.png}
+    \includegraphics[width=0.25\linewidth]{cookbooks/inner_core_convection/Ra1e5P4rescalemodif.png}
+    \caption{Convection regimes in the inner core for different values of $Ra$ and $\mathcal{P}$. From left to right: no convection, translation, plume convection; the 2D slices of the top are with the default temperature scale while at the bottom an adaptative scale is used.}
+    \label{fig:inner-core-regimes}
+       \end{center}
+\end{figure}
 
-In addition, \cite{Deguen2013} give scaling laws for the velocities in each regime derived from linear stability 
-analysis, and show how numerical results compare to them. In the regimes of low $\mathcal{P}$, translation will start 
+\vspace{0.3cm}
+\textbf{Mesh refinement.}
+In the particular case of the inner core dynamics, two main type of mesh refinement could be used. For simulations in the translative mode (Figure 1 ), the particular boundary implies that a finest refinement at the outer boundary is more appropriate. The boundary is permeable, allowing melting or freezing and transfer of material through the boundary. The temperature is set at 1 et the boundary, and for the translation case, a large temperature gradient is imposed at the boundary layer. For this, a specific refinement has to be set for defining correctly the boundary layer at the inner core boundary. For simulations in plume convection, an adaptative mesh-refinement (with the temperature field for exemple) is more adapted, otherwise, the plumes are not enough defined.
+
+In order to have a mesh that is much finer at the outer boundary than in the center of the domain, this expression for the mesh refinement subsection can be used in the input file :
+\lstinputlisting[language=prmfile]{cookbooks/inner_core_convection/inner_core_traction.part.3.prm}
+
+The sum of the "Initial global refinement" and the "Initial adaptative refinement" is always the maximum refinement of the model. In order to have a finest mesh with a refinement of 6 (like for the exemple above), the sum of those two parameters should be 6. The "Initial global refinement" is used to start with an uniform mesh, and then it does a number of mesh refinement step equal to the "Initial adaptive refinement". For higher Rayleigh numbers, the mesh has to be better refine, especially in the thermal boundary layers. This can be achieve by   changing the first term in the parenthesis, which corresponds to the pourcentage of the sphere you want to have a better refinment. 
+
+\vspace{0.3cm}
+\textbf{Scaling laws.} In addition, \cite{Deguen2013} give scaling laws for the velocities in each regime derived from linear stability analysis, and show how numerical results compare to them. In the regimes of low $\mathcal{P}$, translation will start 
 at a critical ratio of Rayleigh number and phase change number $\frac{Ra}{\mathcal{P}}=\frac{175}{2}$ with steady-state 
 translation velocities being zero below this threshold and tending to $v_0=\frac{175}{2}\sqrt{\frac{6}{5}\frac{Ra}{\mathcal{P}}}$ 
 going towards higher values of $\frac{Ra}{\mathcal{P}}$.
@@ -8079,8 +8080,8 @@ Both trends are shown in Figure~\ref{fig:inner-core-trends} and can be compared 
     approximation) become important. Additionally, differences between the analytical and numerical model might 
     be the result of limited resolution (only 12 elements in radial direction).}
     \label{fig:inner-core-trends}
-\end{figure}
-
+\end{figure} 
+ 
 \subsection{Benchmarks}
 \label{sec:cookbooks-benchmarks}
 
